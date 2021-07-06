@@ -1,9 +1,15 @@
-  {% block main %}
+{% extends 'base.html.twig' %}
+
+{% block metaTitle %}
+    Titre
+{% endblock metaTitle %}
+
+{% block main %}
 
       {% for category in categories %}
          {% if category.published %}
              {% endif %}
-                <article>
+                <article class="article">
                     <a href={{ path('categoryShow', {'id' : category.id}) }}>
                         <p>{{ category.title }}</p>
                         <p>{{ category.content }}</p>
@@ -12,3 +18,4 @@
       {% endfor %}
 
   {% endblock main %}
+

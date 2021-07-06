@@ -7,20 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 
-    <title>Document</title>
+    <title>{% block metaTitle %} {% endblock metaTitle %}</title>
 </head>
 <body>
-    <header>
+<header class="header">
+    <figure class="logo">
+        <img src="{{ asset('medias/syfy.png') }}" alt="logo" class="resp">
+    </figure>
 
-    </header>
+    <figure class="menu">
+        <a href="{{ path('listCategories') }}">
+            <img src="{{ asset('medias/menu.png') }}" class="resp">
+        </a>
+    </figure>
+</header>
 
-    <main>
+    <main class="main">
         {% block main %}
         {% endblock main %}
     </main>
 
-    <footer>
-
+    <footer class="footer">
     </footer>
 
 </body>

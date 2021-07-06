@@ -1,8 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block main %}
-    <article>
-        <p>{{ category.title }}</p>
+{% block metaTitle %}
+    Une catégorie
+{% endblock metaTitle %}
 
+{% block main %}
+
+<body>
+    <article>
+        <h1>{{ category.title }}</h1>
+        <p>{{ category.content}} </p>
     </article>
+
+</body>
+
 {% endblock main %}
