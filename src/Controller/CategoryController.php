@@ -42,18 +42,22 @@ class CategoryController extends AbstractController
     /**
      * @Route("/categories", name="listCategories")
      */
+
     // création de la méthode pour récupérer le fichier twig
         public function listCategories()
         {
             return $this->render('categories.html.twig', [
-                'categories' => $this->categories ]
-            );
-        }
-      // création de la méthode pour afficher l'url d'une catégorie
-        public function categoryShow($id) {
-            return $this->render('category.html.twig', [
-                'category' =>$this->category[$id]
+                'categories' => $this->categories
             ]);
         }
 
+    /**
+     * @Route("/categories/{id}", name="categoryShow")
+     */
+      // création de la méthode pour afficher l'url d'une catégorie
+        public function categoryShow($id) {
+            return $this->render('category.html.twig', [
+                'category'=>$this->categories[$id]
+            ]);
+        }
     }
