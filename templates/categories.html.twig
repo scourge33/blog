@@ -1,0 +1,10 @@
+  {% block main %}
+
+        <article>
+            <a href={{ path('categoryshow', {'id' : category.id}) }}>
+                <p>{{ category.title }}</p>
+                <p>{{ category.content }}</p>
+            </a>
+        </article>
+
+  {% endblock main %}
