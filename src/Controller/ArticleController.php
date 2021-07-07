@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
+    //affiche tous les articles
         /**
          * @Route("/articles", name="articleList")
          */
@@ -19,12 +20,15 @@ class ArticleController extends AbstractController
               ]);
         }
 
+        // affiche 1 article
         /**
          * @Route("/articles/{id}", name="articleShow")
          */
         public function articleShow($id, ArticleRepository $articleRepository)
         {
             $article = $articleRepository->find($id);
-            $article = $articleRepository->findOneBy(['id' => $id]);
+
+            return $this->render( 'article_show.html.twig', [
+                'article'=>$article]);
         }
 }
