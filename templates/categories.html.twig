@@ -6,13 +6,13 @@
 
 {% block main %}
 
-      {% for category in categories %}
-         {% if category.published %}
+      {% for categorie in categories %}
+         {% if categorie.published %}
              {% endif %}
                 <article class="article">
-                    <a href={{ path('categoryShow', {'id' : category.id}) }}>
-                        <p>{{ category.title }}</p>
-                        <p>{{ category.content }}</p>
+                    <a href={{ path('categoryShow', {'id' : categorie.id}) }}>
+                        <p>{{ categorie.title }}</p>
+                        <p>{{ categorie.content }}</p>
                     </a>
                 </article>
       {% endfor %}
