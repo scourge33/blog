@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block metaTitle %}
+    Titre
+{% endblock metaTitle %}
+
+{% block main %}
+
+    {% for article in articles %}
+        <article class="article">
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.content }}</p>
+                <P>{{ article.createdAt | date('y-m-d') }}</P>
+        </article>
+    {% endfor %}
+
+{% endblock main %}
+

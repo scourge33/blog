@@ -3,11 +3,13 @@
 namespace App\Entity;
 // créé une table
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
+use App\Repository\ArticleRepository;
+
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
+
 class Article
 {
     /**
@@ -56,7 +58,7 @@ class Article
     /**
      * @param mixed $title
      */
-    public function setTitle($title): void // setter
+    public function setTitle($title): void //getter
     {
         $this->title = $title;
     }
