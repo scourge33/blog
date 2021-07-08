@@ -11,6 +11,7 @@
                 <h2>{{ article.title }}</h2>
                 <p>{{ article.content }}</p>
                 <p>{{ article.createdAt | date('y-m-d') }}</p>
+                <p>{{ article.category.title }}</p>
         </article>
     {% endfor %}
 
