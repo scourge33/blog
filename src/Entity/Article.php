@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 // créé une table
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ArticleRepository;
 
@@ -44,7 +45,15 @@ class Article
      */
     private $category;
 
-    //getters et setters
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tag", inversedBy="articles")
+     */
+    private $tag;
+
+    //
+    // GETTERS N SETTERS
+   //
+
     /**
      * @return mixed
      */
@@ -131,6 +140,22 @@ class Article
     public function setCategory($category): void
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param mixed $tag
+     */
+    public function setTag($tag): void
+    {
+        $this->tag = $tag;
     }
 
 }
