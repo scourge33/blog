@@ -15,11 +15,19 @@
         <img src="{{ asset('medias/syfy.png') }}" alt="logo" class="resp">
     </figure>
 
-    <figure class="menu">
-        <a href="{{ path('listCategories') }}">
-            <img src="{{ asset('medias/menu.png') }}" class="resp">
-        </a>
-    </figure>
+    <nav class="menu">
+        <ul>
+            <li>
+                <a href="{{ path('listCategories') }}">Catégorie</a>
+            </li>
+            <li>
+                <a href="{{ path('articleList') }}">Articles</a>
+            </li>
+            <li>
+                <a href="{{ path('tagList') }}">Tags</a>
+            </li>
+        </ul>
+    </nav>
 </header>
 
     <main class="main">

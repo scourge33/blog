@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <!--boucle for pour indiquer à la page tag d'afficher la couleur indiquée dans la BDD
+    ainsi que le titre du tag-->
+    {% for tag in tags %}
+        <article>
+            <p style="background-color: {{ tag.color }}">{{ tag.title }}</p>
+        </article>
+    {% endfor %}
+
+{% endblock %}
+
+{% block metaTitle %}
+
+{% endblock %}
+
