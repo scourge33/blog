@@ -16,6 +16,10 @@
     </figure>
 
     <nav class="menu">
+        <form action="{{ path('search') }}" method="get">
+            <input type="text" name="q" placeholder="Rechercher...">
+            <input type="submit" value="Rechercher">
+        </form>
         <ul>
             <li>
                 <a href="{{ path('listCategories') }}">Catégories</a>

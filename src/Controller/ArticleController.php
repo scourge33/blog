@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -42,16 +43,18 @@ class ArticleController extends AbstractController
         /**
          * @Route("/search", name="search")
          */
-        public function search(ArticleRepository $articleRepository)
+        // fonction qui va chercher la variable request pour exécuter une requête
+        public function search(ArticleRepository $articleRepository, Request $request)
         {
-            // variable qui va permettre de choisir le mot commun aux articles
-            $term = 'Jean';
+            // variable qui permet de rechercher le mot clé
+            $term = $request->query->get('q');
 
             // connecte le controller au fichier article_search.html.twig
             $articles = $articleRepository->searchByTerm($term);
 
             return $this->render('article_search.html.twig', [
-                'articles' => $articles
+                'articles' => $articles,
+                'term' => $term
             ]);
         }
 }
