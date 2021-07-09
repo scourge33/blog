@@ -44,7 +44,7 @@ class Article
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
      */
     private $category;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tag", inversedBy="articles")
      */

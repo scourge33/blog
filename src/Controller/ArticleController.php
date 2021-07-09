@@ -37,4 +37,18 @@ class ArticleController extends AbstractController
             return $this->render( 'article_show.html.twig', [
                 'article'=>$article]);
         }
+
+        // création de l'url search pour chercher les mots communs aux articles
+        /**
+         * @Route("/search", name="search")
+         */
+        public function search(ArticleRepository $articleRepository)
+        {
+            // connecte le controller au fichier article_search.html.twig
+            $articles = $articleRepository->searchByTerm();
+
+            return $this->render('article_search.html.twig', [
+                'articles' => $articles
+            ]);
+        }
 }

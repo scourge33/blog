@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+    {# boucle qui va chercher le term voulu et communs à tous les articles #}
+    <h1>{{ articles | length }} articles correspondent à la recherche</h1>
+    {% for article in articles %}
+        {% if article.isPublished %}
+
+            {# affiche le titre et le contenu de l'article contenant le mot cherché #}
+            <article class="article">
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.content }}</p>
+                <a href="{{ path('articleShow', {'id': article.id}) }}"></a>
+            </article>
+        {% endif %}
+    {% endfor %}
+    
+{% endblock %}
+
+{% block metaTitle %}
+
+{% endblock %}
+

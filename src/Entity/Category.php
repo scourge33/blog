@@ -33,6 +33,7 @@ class Category
      */
     private $published;
 
+    // 1 catégorie pour x articles
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="category")
      */
