@@ -28,10 +28,21 @@ class ArticleRepository extends ServiceEntityRepository
         $query = $queryBuilder
             ->select('article')
 
+            // fait la jointure entre la catégorie et le tag de l'article
+            ->leftJoin('article.category',  'category' )
+            ->leftJoin('article.tag', 'tag')
+
+            // va chercher le contenu et le nom de l'article ainsi que les noms des catégories
+            // et des tags qui sont en communs
             ->where('article.content LIKE :term')
+            ->orWhere('article.title LIKE :term')
+            ->orWhere('category.title LIKE :term')
+            ->orWhere('tag.title LIKE :term')
+            
             ->setParameter('term', '%'.$term.'%')
             ->getQuery();
 
+        // affiche
         return $query->getResult();
     }
     // /**
