@@ -44,8 +44,11 @@ class ArticleController extends AbstractController
          */
         public function search(ArticleRepository $articleRepository)
         {
+            // variable qui va permettre de choisir le mot commun aux articles
+            $term = 'Jean';
+
             // connecte le controller au fichier article_search.html.twig
-            $articles = $articleRepository->searchByTerm();
+            $articles = $articleRepository->searchByTerm($term);
 
             return $this->render('article_search.html.twig', [
                 'articles' => $articles

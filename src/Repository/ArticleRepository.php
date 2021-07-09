@@ -20,12 +20,9 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     // fonction search
-    public function searchByTerm()
+    public function searchByTerm($term)
     {
         $queryBuilder = $this->createQueryBuilder( 'article');
-
-        // variable qui va permettre de choisir le mot communs aux articles
-        $term = 'Jean';
 
         // variable qui va permettre de parcourir le contenu des articles
         $query = $queryBuilder
