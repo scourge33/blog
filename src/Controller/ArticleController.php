@@ -2,10 +2,14 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Tag;
 use App\Repository\ArticleRepository;
+use App\Repository\CategoryRepository;
+use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +20,11 @@ class ArticleController extends AbstractController
     /**
      * @Route("/articles/insert", name="articleInsert")
      */
-    public function insertArticle(EntityManagerInterface $entityManager)
+    public function insertArticle(
+        EntityManagerInterface $entityManager,
+        CategoryRepository $categoryRepository,
+        TagRepository $tagRepository
+    )
     {
         // new sert à créer une nouvelle instance de la class article
         $article = new Article();
@@ -26,15 +34,53 @@ class ArticleController extends AbstractController
         $article->setTitle("Titre de l'article");
         $article->setContent("Contenu de l'article");
         $article->setIsPublished(true);
-        $article->setCreatedAt(new \DateTime('Now'));
+        $article->setCreatedAt(new \DateTime('NOW'));
 
         // garde l'événement en attente
+        $category = $categoryRepository->find(1);
+
+        $article->setCategory($category);
+
+        $tag = $tagRepository->findOneBy(['title' => 'info']);
+
+        // ajout de nouveaux tags
+        if (is_null($tag)) {
+            $tag = new Tag();
+            $tag->setTitle("info");
+            $tag->setColor("blue");
+        }
+
         $entityManager->persist($article);
 
+        $article->setTag($tag);
+
+        // prépare l'entité à la création
+        $entityManager->persist($article);
         // envoie les informations en bdd
         $entityManager->flush();
 
-        //dump('test'); die;
+        // redirectToRoute?(a voir)
+        return $this->render('article_list.html.twig');
+    }
+
+    //URL pour mettre à jour les articles
+    /**
+     * @Route("/articles/update/{id}", name="articleUpdate")
+     */
+    public function updateArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
+    {
+        // récupère la propriété grâce à l'id
+        $article = $articleRepository->find($id);
+
+        // met à jour le titre de l'article
+        $article->setTitle("update titre");
+
+        // prépare l'entité à la création
+        $entityManager->persist($article);
+        // envoie les informations en bdd
+        $entityManager->flush();
+
+        return new Response('modif ok');
     }
 
     //affiche tous les articles

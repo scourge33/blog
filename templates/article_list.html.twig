@@ -7,12 +7,15 @@
 {% block main %}
 
     {% for article in articles %}
-        <article class="article">
-                <h2>{{ article.title }}</h2>
-                <p>{{ article.content }}</p>
-                <p>{{ article.createdAt | date('y-m-d') }}</p>
-                <p>{{ article.category.title }}</p>
-        </article>
+        {% if {{ article.category.title }} is defined %}
+
+            <article class="article">
+                    <h2>{{ article.title }}</h2>
+                    <p>{{ article.content }}</p>
+                    <p>{{ article.createdAt | date('y-m-d') }}</p>
+
+            </article>
+        {% endif %}
     {% endfor %}
 
 {% endblock main %}
