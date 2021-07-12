@@ -1,7 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -9,6 +11,32 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
+
+    //création de l'URL pour afficher les insert
+    /**
+     * @Route("/articles/insert", name="articleInsert")
+     */
+    public function insertArticle(EntityManagerInterface $entityManager)
+    {
+        // new sert à créer une nouvelle instance de la class article
+        $article = new Article();
+
+        // setter = renseigne le titre, le contenu, si l'article est publié ou non
+        //et la date de crétaion de l'article
+        $article->setTitle("Titre de l'article");
+        $article->setContent("Contenu de l'article");
+        $article->setIsPublished(true);
+        $article->setCreatedAt(new \DateTime('Now'));
+
+        // garde l'événement en attente
+        $entityManager->persist($article);
+
+        // envoie les informations en bdd
+        $entityManager->flush();
+
+        //dump('test'); die;
+    }
+
     //affiche tous les articles
         /**
          * @Route("/articles", name="articleList")
