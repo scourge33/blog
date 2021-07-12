@@ -60,7 +60,7 @@ class ArticleController extends AbstractController
         $entityManager->flush();
 
         // redirectToRoute?(a voir)
-        return $this->render('article_list.html.twig');
+        return $this->redirectToRoute("articleList");
     }
 
     //URL pour mettre à jour les articles
@@ -80,7 +80,21 @@ class ArticleController extends AbstractController
         // envoie les informations en bdd
         $entityManager->flush();
 
-        return new Response('modif ok');
+        return $this->redirectToRoute("articleList");
+    }
+
+    // création de l'URL pour supprimer un article grâce à son id
+    /**
+     * @Route("/articles/delete/{id}", name="articleDelete")
+     */
+    public function deleteArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
+    {
+        $article = $articleRepository->find($id);
+
+        $entityManager->remove($article);
+        $entityManager->flush();
+
+        return $this->redirectToRoute("articleList");
     }
 
     //affiche tous les articles
