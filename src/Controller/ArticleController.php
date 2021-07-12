@@ -89,11 +89,16 @@ class ArticleController extends AbstractController
      */
     public function deleteArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
     {
+        // récupère la propriété grâce à l'id
         $article = $articleRepository->find($id);
 
+        // remove = supprime/enleve l'article dont l'id a été précisé
         $entityManager->remove($article);
+
+        // envoie l'information en bdd
         $entityManager->flush();
 
+        // affiche le résultat
         return $this->redirectToRoute("articleList");
     }
 
