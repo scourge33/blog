@@ -1,16 +1,16 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Front;
 
 use App\Repository\TagRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TagController extends AbstractController
+class FrontTagController extends AbstractController
 {
     //création de l'URL pour tous les tags
     /**
-     * @Route("/tags", name="tagList")
+     * @Route("/front/tags", name="frontTagList")
      */
     // création de la méthode pour récupérer le fichier twig
     public function tagList(TagRepository $tagRepository)
@@ -19,14 +19,14 @@ class TagController extends AbstractController
         $tags = $tagRepository->findAll();
 
         // affiche le résulat
-        return $this->render('tag_list.html.twig', [
+        return $this->render('front/front_tag_list.html.twig', [
             'tags' => $tags
         ]);
     }
 
     // création de l'URL pour un seul tag
     /**
-     * @Route("/tags/{id}", name="tagShow")
+     * @Route("/front/tags/{id}", name="frontTagShow")
      */
     public function tagShow($id, TagRepository $tagRepository)
     {
@@ -39,7 +39,7 @@ class TagController extends AbstractController
         }
 
         // affiche le résulat
-        return $this->render('tag_show.html.twig', [
+        return $this->render('front/front_tag_show.html.twig', [
             'tag' => $tag
         ]);
     }

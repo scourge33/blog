@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/admin_base.html.twig' %}
 
 {% block main %}
     <!--boucle for pour indiquer à la page tag d'afficher la couleur indiquée dans la BDD
@@ -6,8 +6,12 @@
     {% for tag in tags %}
         <article>
             <p style="background-color: {{ tag.color }}">{{ tag.title }}</p>
+            <a href="{{ path('adminTagDelete', {'id' : tag.id} ) }}">Supprimer</a>
+            <a href="{{ path('adminTagUpdate', {'id' : tag.id} ) }}">Modifier</a>
         </article>
     {% endfor %}
+
+    <a href="{{ path('adminTagInsert') }}">Ajouter un tag</a>
 
 {% endblock %}
 

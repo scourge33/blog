@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use App\Entity\Tag;
@@ -8,17 +8,14 @@ use App\Repository\CategoryRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ArticleController extends AbstractController
+class AdminArticleController extends AbstractController
 {
-
     //création de l'URL pour afficher les insert
     /**
-     * @Route("/articles/insert", name="articleInsert")
+     * @Route("/admin/articles/insert", name="adminArticleInsert")
      */
     public function insertArticle(
         EntityManagerInterface $entityManager,
@@ -26,11 +23,11 @@ class ArticleController extends AbstractController
         TagRepository $tagRepository
     )
     {
-        // new sert à créer une nouvelle instance de la class article
+        // new sert à créer une nouvelle instance de la classe article
         $article = new Article();
 
         // setter = renseigne le titre, le contenu, si l'article est publié ou non
-        //et la date de crétaion de l'article
+        //et la date de création de l'article
         $article->setTitle("Titre de l'article");
         $article->setContent("Contenu de l'article");
         $article->setIsPublished(true);
@@ -50,7 +47,7 @@ class ArticleController extends AbstractController
             $tag->setColor("blue");
         }
 
-        $entityManager->persist($article);
+        $entityManager->persist($tag);
 
         $article->setTag($tag);
 
@@ -59,13 +56,12 @@ class ArticleController extends AbstractController
         // envoie les informations en bdd
         $entityManager->flush();
 
-        // redirectToRoute?(a voir)
-        return $this->redirectToRoute("articleList");
+        return $this->redirectToRoute("adminArticleList"); // nom de la route = name
     }
 
     //URL pour mettre à jour les articles
     /**
-     * @Route("/articles/update/{id}", name="articleUpdate")
+     * @Route("/admin/articles/update/{id}", name="adminArticleUpdate")
      */
     public function updateArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
     {
@@ -77,15 +73,16 @@ class ArticleController extends AbstractController
 
         // prépare l'entité à la création
         $entityManager->persist($article);
+
         // envoie les informations en bdd
         $entityManager->flush();
 
-        return $this->redirectToRoute("articleList");
+        return $this->redirectToRoute("adminArticleList");
     }
 
     // création de l'URL pour supprimer un article grâce à son id
     /**
-     * @Route("/articles/delete/{id}", name="articleDelete")
+     * @Route("/admin/articles/delete/{id}", name="adminArticleDelete")
      */
     public function deleteArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
     {
@@ -98,26 +95,26 @@ class ArticleController extends AbstractController
         // envoie l'information en bdd
         $entityManager->flush();
 
-        // affiche le résultat
-        return $this->redirectToRoute("articleList");
+        // renvoie sur la page liste
+        return $this->redirectToRoute("adminArticleList");
     }
 
     //affiche tous les articles
         /**
-         * @Route("/articles", name="articleList")
+         * @Route("/admin/articles", name="adminArticleList")
          */
         public function articleList(articleRepository $articleRepository)
         {
             $articles = $articleRepository->findAll();
 
-              return $this->render( 'article_list.html.twig', [
+              return $this->render( 'admin/admin_article_list.html.twig', [
                       'articles'=>$articles
               ]);
         }
 
         // affiche 1 article
         /**
-         * @Route("/articles/{id}", name="articleShow")
+         * @Route("/admin/articles/{id}", name="adminArticleShow")
          */
         public function articleShow($id, ArticleRepository $articleRepository)
         {
@@ -128,26 +125,7 @@ class ArticleController extends AbstractController
                 throw new NotFoundHttpException();
             }
 
-            return $this->render( 'article_show.html.twig', [
+            return $this->render( 'admin/admin_article_show.html.twig', [
                 'article'=>$article]);
-        }
-
-        // création de l'url search pour chercher les mots communs aux articles
-        /**
-         * @Route("/search", name="search")
-         */
-        // fonction qui va chercher la variable request pour exécuter une requête
-        public function search(ArticleRepository $articleRepository, Request $request)
-        {
-            // variable qui permet de rechercher le mot clé
-            $term = $request->query->get('q');
-
-            // connecte le controller au fichier article_search.html.twig
-            $articles = $articleRepository->searchByTerm($term);
-
-            return $this->render('article_search.html.twig', [
-                'articles' => $articles,
-                'term' => $term
-            ]);
         }
 }

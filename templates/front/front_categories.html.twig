@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'front/front_base.html.twig' %}
 
 {% block metaTitle %}
     Catégories
@@ -10,7 +10,7 @@
          {% if categorie.published %}
              {% endif %}
                 <article class="article">
-                    <a href={{ path('categoryShow', {'id' : categorie.id}) }}>
+                    <a href={{ path('frontCategoryShow', {'id' : categorie.id}) }}>
                         <p>{{ categorie.title }}</p>
                         <p>{{ categorie.content }}</p>
                     </a>

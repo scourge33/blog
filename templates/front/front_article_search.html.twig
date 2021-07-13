@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'front/front_base.html.twig' %}
 
 {% block main %}
 
@@ -11,7 +11,7 @@
             <article class="article">
                 <h2>{{ article.title }}</h2>
                 <p>{{ article.content }}</p>
-                <a href="{{ path('articleShow', {'id': article.id}) }}"></a>
+                <a href="{{ path('frontArticleShow', {'id': article.id}) }}"></a>
             </article>
         {% endif %}
     {% endfor %}

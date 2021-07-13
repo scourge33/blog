@@ -39,6 +39,8 @@ class Category
      */
     private $articles;
 
+    private $categories;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -95,5 +97,10 @@ class Category
     public function getArticles()
     {
         return $this->articles;
+    }
+
+    public function setIsPublished(\DateTime $param)
+    {
+        return $this->categories;
     }
 }

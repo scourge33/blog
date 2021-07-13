@@ -16,19 +16,19 @@
     </figure>
 
     <nav class="menu">
-        <form action="{{ path('search') }}" method="get">
+        <form action="{{ path('frontSearch') }}" method="get">
             <input type="text" name="q" placeholder="Rechercher...">
             <input type="submit" value="Rechercher">
         </form>
         <ul>
             <li>
-                <a href="{{ path('listCategories') }}">Catégories</a>
+                <a href="{{ path('frontListCategories') }}">Catégories</a>
             </li>
             <li>
-                <a href="{{ path('articleList') }}">Articles</a>
+                <a href="{{ path('frontArticleList') }}">Articles</a>
             </li>
             <li>
-                <a href="{{ path('tagList') }}">Tags</a>
+                <a href="{{ path('frontTagList') }}">Tags</a>
             </li>
         </ul>
     </nav>

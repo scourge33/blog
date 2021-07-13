@@ -58,6 +58,11 @@ nav a:hover{
     border-bottom: 2px solid black;
 }
 
+.admin {
+    font-style: italic;
+    color: white;
+}
+
 .main {
     flex-wrap: wrap;
     display: flex;

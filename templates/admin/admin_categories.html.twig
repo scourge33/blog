@@ -1,0 +1,24 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block metaTitle %}
+    Catégories
+{% endblock metaTitle %}
+
+{% block main %}
+
+      {% for categorie in categories %}
+         {% if categorie.published %}
+             {% endif %}
+                <article class="article">
+                    <a href={{ path('adminCategoryShow', {'id' : categorie.id}) }}>
+                        <p>{{ categorie.title }}</p>
+                        <p>{{ categorie.content }}</p>
+                    </a>
+                    <a href="{{ path('adminCategoryDelete', {'id' : categorie.id} ) }}">Supprimer la catégorie</a>
+                    <a href="{{ path('adminCategoryUpdate', {'id' : categorie.id} ) }}">Modifier la catégorie</a>
+                </article>
+      {% endfor %}
+        <a href="{{ path('adminCategoryInsert') }}">Ajouter une catégorie</a>
+
+  {% endblock main %}
+

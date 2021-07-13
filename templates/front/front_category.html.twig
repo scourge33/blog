@@ -1,0 +1,22 @@
+{# category_show #}
+{% extends 'front/front_base.html.twig' %}
+
+{% block metaTitle %}
+    Une catégorie
+{% endblock metaTitle %}
+
+{% block main %}
+
+<body>
+    <article>
+        <h1>{{ categorie.title }}</h1>
+        <p>{{ categorie.content}}
+
+        {% for article in categorie.articles %}
+            <p>{{ article.title }}</p>
+        {% endfor %}
+    </article>
+
+</body>
+
+{% endblock main %}

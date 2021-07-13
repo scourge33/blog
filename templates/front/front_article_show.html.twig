@@ -1,0 +1,16 @@
+{% extends 'front/front_base.html.twig' %}
+
+{% block metaTitle %}
+    exo_blog
+{% endblock metaTitle %}
+
+{% block main %}
+
+        <article class="article">
+            <h2>Titre de l'article : {{ article.title }}</h2>
+            <p>Contenu de l'article : {{ article.content }}</p>
+            <p>Date de création de l'article : {{ article.createdAt | date('y-m-d') }}</p>
+        </article>
+
+{% endblock main %}
+
