@@ -3,11 +3,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use App\Entity\Tag;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,47 +19,67 @@ class AdminArticleController extends AbstractController
     /**
      * @Route("/admin/articles/insert", name="adminArticleInsert")
      */
-    public function insertArticle(
-        EntityManagerInterface $entityManager,
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
-    )
+    public function insertArticle(Request $request, EntityManagerInterface $entityManager)
     {
         // new sert à créer une nouvelle instance de la classe article
         $article = new Article();
 
-        // setter = renseigne le titre, le contenu, si l'article est publié ou non
-        //et la date de création de l'article
-        $article->setTitle("Titre de l'article");
-        $article->setContent("Contenu de l'article");
-        $article->setIsPublished(true);
-        $article->setCreatedAt(new \DateTime('NOW'));
+        // créé le formulaire
+        $articleForm = $this->createForm(ArticleType::class, $article);
 
-        // garde l'événement en attente
-        $category = $categoryRepository->find(1);
+        // relie le formulaire au bouton submit
+        $articleForm->handleRequest($request);
 
-        $article->setCategory($category);
+        // "si le formulaire est publié et valide"
+        if($articleForm->isSubmitted() && $articleForm->isValid()) {
+            // prépare l'entité à la création
+            $entityManager->persist($article);
 
-        $tag = $tagRepository->findOneBy(['title' => 'info']);
-
-        // ajout de nouveaux tags
-        if (is_null($tag)) {
-            $tag = new Tag();
-            $tag->setTitle("info");
-            $tag->setColor("blue");
+            // envoie les informations en bdd
+            $entityManager->flush();
         }
 
-        $entityManager->persist($tag);
+        // renvoie sur la page liste
+        return $this->render('admin/admin_insert.html.twig', [
+            'articleForm' => $articleForm->createView()
+        ]);
+    }
+  //  {
+        // new sert à créer une nouvelle instance de la classe article
+     //   $article = new Article();
 
-        $article->setTag($tag);
+        // setter = renseigne le titre, le contenu, si l'article est publié ou non
+        //et la date de création de l'article
+    //    $article->setTitle("Titre de l'article");
+    //    $article->setContent("Contenu de l'article");
+    //    $article->setIsPublished(true);
+    //    $article->setCreatedAt(new \DateTime('NOW'));
+
+        // garde l'événement en attente
+    //   $category = $categoryRepository->find(1);
+
+    //    $article->setCategory($category);
+
+    //    $tag = $tagRepository->find(1);
+
+        // ajout de nouveaux tags
+    //    if (is_null($tag)) {
+    //        $tag = new Tag();
+    //        $tag->setTitle("info");
+    //        $tag->setColor("blue");
+    //    }
+
+    //    $entityManager->persist($tag);
+
+    //    $article->setTag($tag);
 
         // prépare l'entité à la création
-        $entityManager->persist($article);
+    //    $entityManager->persist($article);
         // envoie les informations en bdd
-        $entityManager->flush();
+    //    $entityManager->flush();
 
-        return $this->redirectToRoute("adminArticleList"); // nom de la route = name
-    }
+    //    return $this->redirectToRoute("adminArticleList"); // nom de la route = name
+  //  }
 
     //URL pour mettre à jour les articles
     /**
