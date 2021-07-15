@@ -37,6 +37,9 @@ class AdminArticleController extends AbstractController
 
             // envoie les informations en bdd
             $entityManager->flush();
+
+            //si ok on renvoi sur la page list pour voir le nouvel article
+            return $this->redirectToRoute('adminArticleList');
         }
 
         // renvoie sur la page liste
