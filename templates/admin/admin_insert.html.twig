@@ -26,6 +26,16 @@
             </div>
 
             <div class="form-group">
+               {{ form_label(articleForm.category) }}
+               {{ form_widget(articleForm.category, {'attr': {'class': 'form-group'}}) }}
+            </div>
+
+            <div class="form-group">
+               {{ form_label(articleForm.tag) }}
+               {{ form_widget(articleForm.tag, {'attr': {'class': 'form-group'}}) }}
+            </div>
+
+            <div class="form-group">
                {{ form_label(articleForm.isPublished) }}
                {{ form_widget(articleForm.isPublished) }}
             </div>
