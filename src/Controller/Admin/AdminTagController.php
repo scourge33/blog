@@ -2,10 +2,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Tag;
+use App\Form\TagType;
 use App\Repository\CategoryRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,24 +17,44 @@ class AdminTagController extends AbstractController
     /**
      * @Route("/admin/tags/insert", name="adminTagInsert")
      */
-    public function insertTag(
-        EntityManagerInterface $entityManager,
-        TagRepository $tagRepository
-    )
+    public function insertTag(Request $request, EntityManagerInterface $entityManager,
+        TagRepository $tagRepository)
     {
-        // new sert à créer une nouvelle instance de la classe article
+        // new sert à créer une nouvelle instance de la classe tag
         $tag = new Tag();
 
+        // créé le formulaire
+        $tagForm = $this->createForm(TagType::class, $tag);
+
+        // relie le formulaire au bouton submit
+        $tagForm->handleRequest($request);
+
+        // publie le formulaire s'il est publié et validé
+        if($tagForm->isSubmitted() && $tagForm->isValid()) {
+            // prépare l'entité à la création
+            $entityManager->persist($tag);
+
+            // envoie les informations en bdd
+            $entityManager->flush();
+
+            // si ok, renvoie sur la page list pour voir le nouveau tag
+            return $this->redirectToRoute('adminTagList');
+        }
+
+        return $this->render('admin/admin_tag_insert.html.twig', [
+            'tagForm' => $tagForm->createView()
+        ]);
+
         // setter = renseigne le titre et la couleur du tag
-        $tag->setTitle("Erreur");
-        $tag->setColor("orange");
+      //  $tag->setTitle("Erreur");
+      //  $tag->setColor("orange");
 
         //prépare l'entité à la création
-        $entityManager->persist($tag);
+       // $entityManager->persist($tag);
         //envoie les informations en bdd
-        $entityManager->flush();
+       // $entityManager->flush();
 
-        return $this->redirectToRoute("adminTagList");
+       // return $this->redirectToRoute("adminTagList");
     }
 
     // URL pour mettre à jour les tags

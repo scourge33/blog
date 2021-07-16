@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminArticleController extends AbstractController
 {
-    //création de l'URL pour afficher les insert
+    //création de l'URL pour ajouter des articles
     /**
      * @Route("/admin/articles/insert", name="adminArticleInsert")
      */
@@ -43,7 +43,7 @@ class AdminArticleController extends AbstractController
         }
 
         // renvoie sur la page liste
-        return $this->render('admin/admin_insert.html.twig', [
+        return $this->render('admin/admin_article_insert.html.twig', [
             'articleForm' => $articleForm->createView()
         ]);
     }

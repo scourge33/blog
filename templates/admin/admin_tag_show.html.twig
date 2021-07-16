@@ -10,7 +10,8 @@
         <p style="background-color: {{ tag.color }}">{{ tag.title }}</p>
 
         {% for article in tag.articles %}
-            <p>{{ article.title }}</p>
+            <p>{{ tag.title }}</p>
+            <p>{{ tag.color }}</p>
         {% endfor %}
     </article>
 

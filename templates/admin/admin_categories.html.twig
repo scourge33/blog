@@ -10,8 +10,9 @@
          {% if categorie.published %}
              {% endif %}
                 <article class="article">
+                    <p>{{ categorie.title }}</p>
+
                     <a href={{ path('adminCategoryShow', {'id' : categorie.id}) }}>
-                        <p>{{ categorie.title }}</p>
                         <p>{{ categorie.content }}</p>
                     </a>
                     <a href="{{ path('adminCategoryDelete', {'id' : categorie.id} ) }}">Supprimer la catégorie</a>

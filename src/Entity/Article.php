@@ -2,15 +2,14 @@
 
 namespace App\Entity;
 // créé une table
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ArticleRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
-
 class Article
 {
     /**
@@ -22,11 +21,18 @@ class Article
 
     /**
      * @ORM\Column(type="string", length="255")
+     * @Assert\NotBlank(message="Try Again")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text") // + de 255 caractères
+     * @Assert\Length(
+     *     min=7,
+     *     max=50,
+     *     minMessage="Plus de 7 caractères requis",
+     *     maxMessage="Moins de 50 caractères requis"
+     * )
      */
     private $content;
 

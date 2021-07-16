@@ -2,10 +2,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,27 +17,49 @@ class AdminCategoryController extends AbstractController
     /**
      * @Route("/admin/categories/insert", name="adminCategoryInsert")
      */
-    public function insertCategory(
-        EntityManagerInterface $entityManager,
-        CategoryRepository $categoryRepository
-    )
+    public function insertCategory(Request $request, EntityManagerInterface $entityManager,
+        CategoryRepository $categoryRepository)
     {
-        // new sert à créer une nouvelle instance de la classe tag
+        // new sert à créer une nouvelle instance de la classe category
         $category = new Category();
 
+        // créé le formulaire
+        $categoryForm = $this->createForm(CategoryType::class, $category);
+
+        // relie le formulaire au bouton submit
+        $categoryForm->handleRequest($request);
+
+        // Publie le formulaire s'il est publié et validé
+        if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
+            // prépare l'entité à la création
+            $entityManager->persist($category);
+
+            // envoie les informations en bdd
+            $entityManager->flush();
+
+            // si ok, renvoie sur la page list pour voir la nouvelle catégorie
+            return $this->redirectToRoute('adminListCategories');
+        }
+
+        return $this->render('admin/admin_category_insert.html.twig', [
+            'categoryForm' => $categoryForm->createView()
+        ]);
+
+    }
+
         // setter = renseigne le titre, le contenu et si la catégorie est publiée
-        $category->setTitle("Titre de la catégorie");
-        $category->setContent("Contenu de la catégorie");
-        $category->setPublished(true);
+    //    $category->setTitle("Titre de la catégorie");
+     //   $category->setContent("Contenu de la catégorie");
+     //   $category->setPublished(true);
 
         // garde l'événement en attente
-        $category = $categoryRepository->find(5);
+     //   $category = $categoryRepository->find(5);
 
-        // envoie les informations en bdd
-        $entityManager->flush();
+       // envoie les informations en bdd
+     //   $entityManager->flush();
 
-        return $this->redirectToRoute("adminListCategories");
-    }
+     //   return $this->redirectToRoute("adminListCategories");
+
 
     // création de l'URL pour mettre à jour les catégories
     /**

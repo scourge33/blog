@@ -1,0 +1,46 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block main %}
+
+    <h2 style="color:#B0413E">Add a new category</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            {{ form_start(categoryForm) }}
+
+            <div class="form-group">
+                {{ form_label(categoryForm.title) }}
+                {{ form_widget(categoryForm.title, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <div class="errors">
+                {{ form_errors(categoryForm.title) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(categoryForm.content, NULL, {'label_attr':{'class':'form_category_content_input'}}) }}
+                {{ form_widget(categoryForm.content, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(categoryForm.content) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(categoryForm.published) }}
+                {{ form_widget(categoryForm.published) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_widget(categoryForm.submit, {'attr': {'class': 'btn btn-danger'}, 'label': 'Save'}) }}
+            </div>
+
+            {{ form_end(categoryForm) }}
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+
+
