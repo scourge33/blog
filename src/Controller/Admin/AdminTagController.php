@@ -37,6 +37,12 @@ class AdminTagController extends AbstractController
             // envoie les informations en bdd
             $entityManager->flush();
 
+            // message d'info pour indiquer que le tag a été créé
+            $this->addFlash(
+                'success',
+                'Le tag '. $tag->getTitle().' a bien été créé !'
+            );
+
             // si ok, renvoie sur la page list pour voir le nouveau tag
             return $this->redirectToRoute('adminTagList');
         }
@@ -75,6 +81,12 @@ class AdminTagController extends AbstractController
         //envoie les informations en bdd
         $entityManager->flush();
 
+        // message d'info pour indiquer que le tag a été maj
+        $this->addFlash(
+            'success',
+            'Le tag '. $tag->getTitle().' a bien été mis à jour !'
+        );
+
         return $this->redirectToRoute("adminTagList");
     }
 
@@ -92,6 +104,12 @@ class AdminTagController extends AbstractController
 
         //envoie l'information en bdd
         $entityManager->flush();
+
+        // message d'info pour indiquer que le tag a été supprimé
+        $this->addFlash(
+            'success',
+            'Le tag '. $tag->getTitle().' a bien été supprimé !'
+        );
 
         // renvoie sur la page liste
         return $this->redirectToRoute("adminTagList");

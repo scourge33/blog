@@ -38,6 +38,12 @@ class AdminArticleController extends AbstractController
             // envoie les informations en bdd
             $entityManager->flush();
 
+            // message d'info pour indiquer que l'article a été créé
+            $this->addFlash(
+                'success',
+                'L\'article '. $article->getTitle().' a bien été créé !'
+            );
+
             //si ok on renvoi sur la page list pour voir le nouvel article
             return $this->redirectToRoute('adminArticleList');
         }
@@ -102,6 +108,12 @@ class AdminArticleController extends AbstractController
         // envoie les informations en bdd
         $entityManager->flush();
 
+        // message d'info pour indiquer que l'article a été maj
+        $this->addFlash(
+            'success',
+            'L\'article '. $article->getTitle().' a bien été mis à jour !'
+        );
+
         return $this->redirectToRoute("adminArticleList");
     }
 
@@ -119,6 +131,12 @@ class AdminArticleController extends AbstractController
 
         // envoie l'information en bdd
         $entityManager->flush();
+
+        // message d'info pour indiquer que l'article a été supprimé
+        $this->addFlash(
+            'success',
+            'L\'article '. $article->getTitle().' a bien été supprimé !'
+        );
 
         // renvoie sur la page liste
         return $this->redirectToRoute("adminArticleList");

@@ -38,7 +38,6 @@ class Tag
         $this->articles = new ArrayCollection();
     }
 
-
     //
     //GETTERS N SETTERS
     //

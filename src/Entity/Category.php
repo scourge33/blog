@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -27,8 +29,8 @@ class Category
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(
-     *     min=1,
-     *     max=3,)
+     *     min=5,
+     *     max=30,)
      */
     private $content;
 

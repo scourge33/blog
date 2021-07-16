@@ -37,6 +37,12 @@ class AdminCategoryController extends AbstractController
             // envoie les informations en bdd
             $entityManager->flush();
 
+            // message d'info pour indiquer que la catégorie a été créé
+            $this->addFlash(
+                'success',
+                'La catégorie '. $category->getTitle().' a bien été créée !'
+            );
+
             // si ok, renvoie sur la page list pour voir la nouvelle catégorie
             return $this->redirectToRoute('adminListCategories');
         }
@@ -79,23 +85,35 @@ class AdminCategoryController extends AbstractController
         // envoie les informations en bdd
         $entityManager->flush();
 
+        // message d'info pour indiquer que la catégorie a été maj
+        $this->addFlash(
+            'success',
+            'La catégorie '. $category->getTitle().' a bien été mise à jour !'
+        );
+
         return $this->redirectToRoute("adminListCategories");
     }
 
     // URL pour supprimer une catégorie grâce à son id
     /**
-     * @Route("admin/categories/delete{id}", name="adminCategoryDelete")
+     * @Route("admin/categories/delete/{id}", name="adminCategoryDelete")
      */
     public function deleteCategory($id, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
     {
         //récupère la propriété grâce à l'id
-        $category = $categoryRepository->find{$id};
+        $category = $categoryRepository->find($id);
 
-        // remove = supprime/enlève l'article dont l'id a été précisé
+        // remove = supprime/enlève la catégorie dont l'id a été précisé
         $entityManager->remove($category);
 
         // envoie l'information en bdd
         $entityManager->flush();
+
+        // message d'info pour indiquer que la catégorie a été supprimée
+        $this->addFlash(
+            'success',
+            'La catégorie '. $category->getTitle().' a bien été supprimée !'
+        );
 
         // renvoie sur la page liste
         return $this->redirectToRoute("adminListCategories");
