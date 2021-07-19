@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AdminArticleController extends AbstractController
 {
@@ -19,7 +20,7 @@ class AdminArticleController extends AbstractController
     /**
      * @Route("/admin/articles/insert", name="adminArticleInsert")
      */
-    public function insertArticle(Request $request, EntityManagerInterface $entityManager)
+    public function insertArticle(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger)
     {
         // new sert à créer une nouvelle instance de la classe article
         $article = new Article();
@@ -32,6 +33,23 @@ class AdminArticleController extends AbstractController
 
         // "si le formulaire est publié et valide"
         if($articleForm->isSubmitted() && $articleForm->isValid()) {
+
+            $imageFile = $articleForm->get('image')->getData();
+
+            if($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                $safeFileName = $slugger->slug($originalFilename);
+
+                $newFileName = $safeFileName.'_'.uniqid().'.'.$imageFile->guessExtension();
+
+                $imageFile->move(
+                    $this->getParameter('upload'),
+                    $newFileName
+                );
+
+                $article->setImage($newFileName);
+            }
             // prépare l'entité à la création
             $entityManager->persist($article);
 
@@ -94,27 +112,34 @@ class AdminArticleController extends AbstractController
     /**
      * @Route("/admin/articles/update/{id}", name="adminArticleUpdate")
      */
-    public function updateArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager)
+    public function updateArticle($id, ArticleRepository $articleRepository, EntityManagerInterface $entityManager, Request $request)
     {
         // récupère la propriété grâce à l'id
         $article = $articleRepository->find($id);
 
-        // met à jour le titre de l'article
-        $article->setTitle("update titre");
+        // propose le formulaire pour modifier l'article
+        $articleForm = $this->createForm(ArticleType::class, $article);
 
-        // prépare l'entité à la création
-        $entityManager->persist($article);
+        // lie le formulaire aux modifications
+        $articleForm->handleRequest($request);
 
-        // envoie les informations en bdd
-        $entityManager->flush();
+        // Met à jour si les conditions sont remplies correctement
+        if ($articleForm->isSubmitted() && $articleForm->isValid()) {
+            // prépare l'entité à la création
+            $entityManager->persist($article);
+            // envoie les informations en bdd
+            $entityManager->flush();
+            // message d'info pour indiquer que l'article a été maj
+            $this->addFlash(
+                'success',
+                'L\'article '. $article->getTitle().' a bien été mis à jour !'
+            );
 
-        // message d'info pour indiquer que l'article a été maj
-        $this->addFlash(
-            'success',
-            'L\'article '. $article->getTitle().' a bien été mis à jour !'
-        );
+            return $this->redirectToRoute('adminArticleList');
+        }
 
-        return $this->redirectToRoute("adminArticleList");
+        //renvoi du formulaire sur une page vue si le formulaire n est pas validé
+        return $this->render('Admin/admin_article_insert.html.twig',['articleForm'=> $articleForm ->createView()] );
     }
 
     // création de l'URL pour supprimer un article grâce à son id

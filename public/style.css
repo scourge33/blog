@@ -9,7 +9,7 @@
     background-color: #B0413E;
     text-align: center;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -39,8 +39,8 @@
 
 nav li {
     width: 20%;
-    float: right;
-    margin-right: 20px;
+    float: left;
+    margin: 20px;
 }
 
 nav ul {
@@ -86,6 +86,10 @@ nav a:hover{
     text-align: center;
     margin: 20px 0;
     border: 2px solid #B0413E;
+}
+
+.image-sad {
+    width: 50%;
 }
 
 

@@ -2,6 +2,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Form\ArticleType;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\TagRepository;
@@ -71,27 +72,34 @@ class AdminCategoryController extends AbstractController
     /**
      * @Route("/admin/categories/update{id}", name="adminCategoryUpdate")
      */
-    public function updateCategory($id, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
+    public function updateCategory($id, CategoryRepository $categoryRepository, EntityManagerInterface $entityManager, Request $request)
     {
         // récupère la propriété grâce à l'id
         $category = $categoryRepository->find($id);
 
-        // met à jour le titre de la catégorie
-        $category->setTitle("update titre");
+        // propose le formulaire pour modifier la catégorie
+        $categoryForm = $this->createForm(CategoryType::class, $category);
 
-        // prépare l'entité à la création
-        $entityManager->persist($category);
+        // lie le formulaire aux modifications
+        $categoryForm->handleRequest($request);
 
-        // envoie les informations en bdd
-        $entityManager->flush();
+        // Met à jour si les conditions sont remplies correctement
+        if ($categoryForm->isSubmitted() && $categoryForm->isValid()) {
+            // prépare l'entité à la création
+            $entityManager->persist($category);
+            // envoie les informations en bdd
+            $entityManager->flush();
+            // message d'info pour indiquer que la catégorie a été maj
+            $this->addFlash(
+                'success',
+                'La catégorie '. $category->getTitle().' a bien été mis à jour !'
+            );
 
-        // message d'info pour indiquer que la catégorie a été maj
-        $this->addFlash(
-            'success',
-            'La catégorie '. $category->getTitle().' a bien été mise à jour !'
-        );
+            return $this->redirectToRoute('adminListCategories');
+        }
 
-        return $this->redirectToRoute("adminListCategories");
+        //renvoi du formulaire sur une page vue si le formulaire n est pas validé
+        return $this->render('Admin/admin_category_insert.html.twig',['categoryForm'=> $categoryForm ->createView()] );
     }
 
     // URL pour supprimer une catégorie grâce à son id

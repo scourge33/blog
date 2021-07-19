@@ -56,6 +56,11 @@ class Article
      */
     private $tag;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
     //
     // GETTERS N SETTERS
    //
@@ -162,6 +167,18 @@ class Article
     public function setTag($tag): void
     {
         $this->tag = $tag;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
     }
 
 }

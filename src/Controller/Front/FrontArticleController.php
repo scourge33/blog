@@ -17,7 +17,7 @@ class FrontArticleController extends AbstractController
 {
     //affiche tous les articles
         /**
-         * @Route("/front/articles", name="frontArticleList")
+         * @Route("/articles", name="frontArticleList")
          */
         public function articleList(articleRepository $articleRepository)
         {
@@ -30,7 +30,7 @@ class FrontArticleController extends AbstractController
 
         // affiche 1 article
         /**
-         * @Route("/front/articles/{id}", name="frontArticleShow")
+         * @Route("/articles/{id}", name="frontArticleShow")
          */
         public function articleShow($id, ArticleRepository $articleRepository)
         {
@@ -47,7 +47,7 @@ class FrontArticleController extends AbstractController
 
         // création de l'url search pour chercher les mots communs aux articles
         /**
-         * @Route("/front/search", name="frontSearch")
+         * @Route("/search", name="frontSearch")
          */
         // fonction qui va chercher la variable request pour exécuter une requête
         public function search(ArticleRepository $articleRepository, Request $request)

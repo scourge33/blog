@@ -67,27 +67,34 @@ class AdminTagController extends AbstractController
     /**
      * @Route("/admin/tags/update/{id}", name="adminTagUpdate")
      */
-    public function updateTag($id, TagRepository $tagRepository, EntityManagerInterface $entityManager)
+    public function updateTag($id, TagRepository $tagRepository, EntityManagerInterface $entityManager, Request $request)
     {
         // récupère la propriété grâce à l'id
         $tag = $tagRepository->find($id);
 
-        // met à jour le titre du tag
-        $tag->setTitle("update tag");
+        // propose le formulaire pour modifier le tag
+        $tagForm = $this->createForm(TagType::class, $tag);
 
-        //prépare l'entité à la création
-        $entityManager->persist($tag);
+        // lie le formulaire aux modifications
+        $tagForm->handleRequest($request);
 
-        //envoie les informations en bdd
-        $entityManager->flush();
+        // met à jour si les conditions sont remplies correctement
+        if ($tagForm->isSubmitted() && $tagForm->isValid()) {
+            //prépare l'entité à la création
+            $entityManager->persist($tag);
+            //envoie les informations en bdd
+            $entityManager->flush();
+            // message d'info pour indiquer que le tag a été maj
+            $this->addFlash(
+                'success',
+                'Le tag '. $tag->getTitle().' a bien été mis à jour !'
+            );
 
-        // message d'info pour indiquer que le tag a été maj
-        $this->addFlash(
-            'success',
-            'Le tag '. $tag->getTitle().' a bien été mis à jour !'
-        );
+            return $this->redirectToRoute('adminTagList');
+        }
 
-        return $this->redirectToRoute("adminTagList");
+        //renvoi du formulaire sur une page vue si le formulaire n est pas validé
+        return $this->render('Admin/admin_tag_insert.html.twig',['tagForm'=> $tagForm ->createView()] );
     }
 
     // URL pour supprimer les tags
